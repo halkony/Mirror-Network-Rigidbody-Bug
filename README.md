@@ -14,7 +14,8 @@ Whenever a client authoritative Reliable Rigidbody 2D is present on a remote cli
 # Analysis
 The code causing this behavior is in the `FixedUpdate` function of `NetworkRigidbodyReliable2D.cs`
 
-```void FixedUpdate()
+```
+void FixedUpdate()
 {
     // who ever has authority moves the Rigidbody with physics.
     // everyone else simply sets it to kinematic.
@@ -56,6 +57,7 @@ The code causing this behavior is in the `FixedUpdate` function of `NetworkRigid
         // the authority owner might use it either way.
         if (!owned) rb.isKinematic = true;
     }
-}```
+}
+```
 
 In this example, the first if block is what's run on the server/local client. Since the server doesn't own the object, `isKinematic` is set to true and collisions are not handled serverside. So `OnCollisionEnter2D` is not called. If you change this code to `bool owned = true;` (so the server handles the physics), you would get the expected behavior.
